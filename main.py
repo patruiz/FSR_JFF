@@ -42,37 +42,61 @@ try:
   
     test_num, flag = 1, True
     keyboard.wait("space")
-    print("\n----- Start Test-----\n")
+    print("\n----- START TEST-----\n")
 
-    final_data = []
+    final_data = {}
+    ser.close()
 
-    try:
-        while True:
-            try:
-                ser.open()
-            except:
-                pass
-            final_data.append(get_vals(test_num))
+    # try:
+    while True:
+        try:
+            ser.open()
+            new_data = {str(test_num): get_vals(test_num)}
             test_num = test_num + 1
             ser.close()
+            final_data.update(new_data)
+            # print(final_data)
 
-    except KeyboardInterrupt:
-        print("\n----- End Test -----\n")
+        except KeyboardInterrupt:
+            print("\n----- END TEST -----\n")
+
+            df = pd.DataFrame(final_data)
         
-        df = pd.DataFrame(final_data, columns = ["Force (lbf)"])
+            file_name = "ForceData_" + str(datetime.now()) + ".csv"
+            file_path = save_path + "\\" + file_name
+
+            swag_path = r"C:\Users\nf18571\Desktop\FSR_Datalogger\data"
+
+            print(f"File Name: {file_name}")
+            print(f"File Directory: {file_path}")
+
+            print("\nForce Value Results\n")
+            print(df)
+
+            df.to_csv(swag_path, index = False)
+
+            ser.close()
+            print(f"\n----- Disconnected from {ser_info['Name']} -----\n")
+
+except:
+    pass
+# except KeyboardInterrupt:
+#     print("\n----- End Test -----\n")
         
-        file_name = "Force Data " + str(datetime.now()) + ".csv"
-        print(f"File Name: {file_name}")
-        print(f"File Directory: {save_path}")
-
-        print("\nForce Value Results\n")
-        print(df)
- 
-        os.chdir(save_path) 
-        df.to_csv(file_name, index = True)
-
-        ser.close()
-        print(f"\n----- Disconnected from {ser_info['Name']} -----\n")
+#     df = pd.DataFrame(final_data, columns = ["Force (lbf)"])
     
-except serial.SerialException:
-    print("\n----- Serial Connection Failed -----\n")
+#     file_name = "Force Data " + str(datetime.now()) + ".csv"
+#     print(f"File Name: {file_name}")
+#     print(f"File Directory: {save_path}")
+
+#     print("\nForce Value Results\n")
+#     print(df)
+
+#     os.chdir(save_path) 
+#     df.to_csv(file_name, index = True)
+
+#     ser.close()
+#     print(f"\n----- Disconnected from {ser_info['Name']} -----\n")
+
+# except serial.SerialException:
+#     print("\n----- Serial Connection Failed -----\n")
