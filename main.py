@@ -5,7 +5,8 @@ import pandas as pd
 from datetime import datetime
 import serial, serial.tools.list_ports
 
-save_path = os.getcwd()
+# save_path = r"C:\Users\pr19556\OneDrive - Applied Medical\Documents\ER 20022640 Lap Fusion JFF EQ Updates\Programs\VoyantJFFEQ_Update\Data"
+save_path = os.getcwd() + r"\Data"
 
 def get_vals(test_num):
     force_data, data_values = np.array([], dtype = float), 0
