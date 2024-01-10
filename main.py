@@ -13,7 +13,7 @@ def get_vals(test_num):
     print(f"\n----- TEST {test_num} START -----")
     print(f"\nTest Num: {test_num}")
          
-    while data_values <= 69:
+    while data_values <= 25000*5:
         try: 
             data_raw = ser.readline().decode('ascii', errors = 'replace').strip()
         except UnicodeDecodeError as e:
@@ -28,7 +28,7 @@ def get_vals(test_num):
 
     # print(force_data)
     return force_data 
-
+ 
 
 for port in serial.tools.list_ports.comports():
     info = dict({"Name": port.name, "Description": port.description, "Manufacturer": port.manufacturer, "Hwid": port.hwid})
