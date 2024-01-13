@@ -20,6 +20,8 @@ data_average = []
 for col in range(len(data.columns)):
     data_average.append(round(np.average(data.iloc[col]), 2))
 
+print(data_average)
+
 print(np.std(data_average))
 print(data_average)
 
