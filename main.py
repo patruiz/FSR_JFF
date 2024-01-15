@@ -13,7 +13,7 @@ def get_vals(test_num):
     print(f"\n----- TEST {test_num} START -----")
     print(f"\nTest Num: {test_num}")
          
-    while data_values <= 25000*5:
+    while data_values <= 69:
         try: 
             data_raw = ser.readline().decode('ascii', errors = 'replace').strip()
         except UnicodeDecodeError as e:
@@ -36,7 +36,7 @@ for port in serial.tools.list_ports.comports():
         ser_info = dict({"Name": port.name, "Description": port.description, "Manufacturer": port.manufacturer, "Hwid": port.hwid})
 
 try:
-    ser = serial.Serial(port = "COM9", baudrate = 9600, timeout = None)
+    ser = serial.Serial(port = "COM3", baudrate = 9600, timeout = None)
     print(f"\n----- Connected to {ser_info['Name']} -----\n")
 
     print("Press Space to Begin Test. . .\n")
