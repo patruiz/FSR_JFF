@@ -1,0 +1,25 @@
+import matplotlib.pyplot as plt
+import pandas as pd 
+import numpy as np 
+
+def individuals_chart(data):
+    try:
+        data = np.abs(data)
+        mu = np.average(data)
+        sigma = np.std(data)
+        # k = len(data)
+        k = 3
+        LCL = mu - k*sigma
+        UCL = mu + k*sigma 
+
+        plt.plot(data, 'o-')
+        plt.xlabel("Observation")
+        plt.ylabel("Individual Value")
+        plt.axhline(y = mu, linestyle = "--", color = 'black', label = f"X_Bar = {round(mu, 4)}")
+        plt.axhline(y = LCL, linestyle = "--", color = 'red', label = f"LCL = {round(LCL, 4)}")
+        plt.axhline(y = UCL, linestyle = "--", color = 'blue', label = f"UCL = {round(UCL, 4)}")
+        plt.legend(loc = 0)
+        plt.show()
+
+    except:
+        print("Invalid Entry")
