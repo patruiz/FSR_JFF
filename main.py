@@ -6,14 +6,15 @@ from datetime import datetime
 import serial, serial.tools.list_ports
 
 # save_path = r"C:\Users\pr19556\OneDrive - Applied Medical\Documents\ER 20022640 Lap Fusion JFF EQ Updates\Programs\VoyantJFFEQ_Update\Data"
-save_path = os.getcwd() + r"\Data"
+# save_path = os.getcwd() + r"\\CapabilityData"
+save_path = os.getcwd() + r"\\StabilityData\\RawData"
 
 def get_vals(test_num):
     force_data, data_values = np.array([], dtype = float), 0
     print(f"\n----- TEST {test_num} START -----")
     print(f"\nTest Num: {test_num}")
          
-    while data_values <= 69:
+    while data_values <= 20000:
         try: 
             data_raw = ser.readline().decode('ascii', errors = 'replace').strip()
         except UnicodeDecodeError as e:
@@ -36,7 +37,7 @@ for port in serial.tools.list_ports.comports():
         ser_info = dict({"Name": port.name, "Description": port.description, "Manufacturer": port.manufacturer, "Hwid": port.hwid})
 
 try:
-    ser = serial.Serial(port = "COM3", baudrate = 9600, timeout = None)
+    ser = serial.Serial(port = ser_info["Name"], baudrate = 9600, timeout = None)
     print(f"\n----- Connected to {ser_info['Name']} -----\n")
 
     print("Press Space to Begin Test. . .\n")

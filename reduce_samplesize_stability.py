@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt 
 
-FILENUM = 5
+FILENUM = 19
 
 root_dir = os.getcwd()
 
@@ -28,7 +28,7 @@ newdata_69 = np.array([], dtype = int)
 
 count = 0
 for i in range(data.size):
-    if count == 9:
+    if count == 19:
         newdata_69 = np.append(data[0, i], newdata_69)
         count = 0
     else: 

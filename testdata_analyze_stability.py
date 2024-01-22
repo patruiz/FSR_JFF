@@ -8,7 +8,7 @@ data_dir = os.getcwd() + "\\StabilityData\\ReducedData"
 # data_dir = "C:\\Users\\pr19556\\OneDrive - Applied Medical\\Documents\\Force Sensing Resistor\\Test Data"
 data_list = os.listdir(data_dir)
 
-data_file = data_list[7]
+data_file = data_list[-1]
 # data_file = "ForceData_2024-01-08 13-26-42.csv"
 datafile_dir = data_dir + "\\" + data_file
 
