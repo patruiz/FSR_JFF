@@ -1,12 +1,13 @@
 from pyfirmata import Arduino, util, INPUT
+import matplotlib.pyplot as plt 
+from datetime import datetime 
+import keyboard 
 import pandas as pd
 import numpy as np 
 import time 
-from datetime import datetime 
-import matplotlib.pyplot as plt 
 import os 
 
-def store_voltage(port, time_lim = 10, time_step = 1):
+def read_value(port, time_lim = 5, time_step = 1):
     t1, t2 = time.time(), time.time() 
     voltage = []
     
@@ -18,7 +19,7 @@ def store_voltage(port, time_lim = 10, time_step = 1):
     return np.array(voltage)
 
 def csv_export(data):
-    data_df = pd.DataFrame(data, columns = ["Time", "Voltage"])
+    data_df = pd.DataFrame(data)
     save_path = os.getcwd() + "\\BetaBoard"
     file_name = "ForceData_" + str(datetime.now().strftime("%Y-%m-%d %H-%M-%S")) + ".csv"
     file_path = save_path + "\\" + file_name
@@ -29,9 +30,32 @@ def main():
     board = Arduino("COM3")
     iterator = util.Iterator(board)
     iterator.start()
+    print("\n----- Connected to Arduio -----\m")
 
-    result = store_voltage(board.analog[2])
-    csv_export(result)
+    print("Press Space to Begin Test . . . \n")
+    print("Press Ctrl + C to End Test\n")
+    keyboard.wait("space")
+
+    test_num = 1
+    test_data = {}
+    while True:
+        values = []
+        try:
+            while len(values) < 690:
+                values.append(board.analog[2].read())
+
+            print(f"\n--- START: Test Number {str(test_num)} ---\n")
+            new_data = {str(test_num): values}
+            test_data.update(new_data)
+            test_num = test_num + 1
+            print(f"\n--- END: Test Number {str(test_num)} ---\n")
+
+
+        except KeyboardInterrupt:
+            csv_export(test_data)
+            print("\n----- Disconnected from Arduio -----\n")
+        
+        keyboard.wait("space")
 
 if __name__ == "__main__":
     main()
