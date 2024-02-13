@@ -1,4 +1,4 @@
-from pyfirmata import Arduino, util, INPUT
+# from pyfirmata import Arduino, util, INPUT
 import matplotlib.pyplot as plt 
 from datetime import datetime 
 import keyboard 
@@ -30,10 +30,10 @@ def main():
     board = Arduino("COM3")
     iterator = util.Iterator(board)
     iterator.start()
-    print("\n----- Connected to Arduio -----\m")
+    print("\n----- Connected to Arduio -----\n")
 
     print("Press Space to Begin Test . . . \n")
-    print("Press Ctrl + C to End Test\n")
+    print("Press Ctrl + C to End Test . . . \n")
     keyboard.wait("space")
 
     test_num = 1
@@ -47,8 +47,8 @@ def main():
             print(f"\n--- START: Test Number {str(test_num)} ---\n")
             new_data = {str(test_num): values}
             test_data.update(new_data)
-            test_num = test_num + 1
             print(f"\n--- END: Test Number {str(test_num)} ---\n")
+            test_num = test_num + 1
 
 
         except KeyboardInterrupt:
