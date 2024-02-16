@@ -6,7 +6,7 @@ from datetime import datetime
 import matplotlib.pyplot as plt 
 import os 
 import keyboard 
-import os
+import serial
 
 def read_values(port, time_lim, time_step):
     t1, t2 = time.time(), time.time() 
@@ -15,9 +15,18 @@ def read_values(port, time_lim, time_step):
     while(t2 - t1) <= time_lim:
         time.sleep(time_step)
         t2 = time.time()
-        values.append(port.read())
+        values.append(float(port.read()))
     
-    return np.array(values)
+    return np.array(values, dtype = int)
+
+def readserial(comport, baudrate, time_lim, time_step):
+        ser = serial.Serial(comport, baudrate, timeout = time_step)
+        data = []
+        while len(data) < time_lim:
+            val = ser.readline().decode().strip()
+            if val:
+                data.append(val)
+        return data
 
 def csv_export(data):
     save_path = os.getcwd() + "\\BetaBoard"
@@ -28,9 +37,12 @@ def csv_export(data):
 def main(comport, time_lim, time_step, savefile):
     os.system('cls')
     
-    board = Arduino(comport)
-    iterator = util.Iterator(board)
-    iterator.start()
+    # board = Arduino(comport)
+    # iterator = util.Iterator(board)
+    # iterator.start()
+
+    # swag_board = board.analog[2]
+    # swag_board.enable_reporting()
 
     data_df = pd.DataFrame()
 
@@ -41,31 +53,37 @@ def main(comport, time_lim, time_step, savefile):
     os.system('cls')
     print(f"Connected to: {comport}\n")
     print("----- Test Parameters ----- ")
-    print(f"Time per Sample: {str(float(time_lim))} (sec)")
-    print(f"Readings per Sample: {str(int(time_lim/time_step))}")
+    print(f"Time per Sample: {str(float(time_lim*time_step))} (sec)")
+    # print(f"Readings per Sample: {str(int(time_lim/time_step))}")
     print("----------------------------\n")
 
     test_num, data = 1, {}
 
-    print("Press SPACE to begin test . . .")
-    keyboard.wait("space")
+    print("Press SPACE to begin test . . .\n")
+
     while True:
         try:
+            keyboard.wait("space")
             os.system("cls")
             print(f"-------- Test Num: {str(int(test_num))} --------\n")
             print(f"Test Num {str(int(test_num))} . . . In Progress\n")
-            result = read_values(board.analog[2], time_lim, time_step)
+            result = readserial(comport, 9600, time_lim, time_step)
+            # result = read_values(swag_board, time_lim, time_step)
             new_data = {str(test_num): result}
             data.update(new_data)
             print(f"Test Num {str(int(test_num))} . . . Complete\n")
             print("-----------------------------\n")
             test_num = test_num + 1
+            print(" ")
+            print(result)
+            print(" ")
             print("Press SPACE to begin next test . . .")
             print("Press CTRL+C to end testing . . .")
-            keyboard.wait("space")
         
         except KeyboardInterrupt:
             data_df = pd.DataFrame.from_dict(data)
+            print(data_df)
+
             if savefile == True:
                 csv_export(data_df)
             
@@ -73,5 +91,5 @@ def main(comport, time_lim, time_step, savefile):
             break
 
 if __name__ == "__main__":
-    main("COM4", 1, .2, False)
+    main("COM4", 10, .5, True)
 
