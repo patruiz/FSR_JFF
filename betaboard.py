@@ -23,9 +23,11 @@ def readserial(comport, baudrate, time_lim, time_step):
         ser = serial.Serial(comport, baudrate, timeout = time_step)
         data = []
         while len(data) < time_lim:
-            val = ser.readline().decode().strip()
-            if val:
+            try:
+                val = int(ser.readline().decode().strip())
                 data.append(val)
+            except:
+                pass
         return data
 
 def csv_export(data):
@@ -44,7 +46,7 @@ def main(comport, time_lim, time_step, savefile):
     # swag_board = board.analog[2]
     # swag_board.enable_reporting()
 
-    data_df = pd.DataFrame()
+    data_df = pd.DataFrame()  
 
     print("\n**************************************\n\n ----- BetaBoard FSR Testing ----- \n\n**************************************\n")
     print("Press ENTER to continue . . . \n")
@@ -72,7 +74,7 @@ def main(comport, time_lim, time_step, savefile):
             new_data = {str(test_num): result}
             data.update(new_data)
             print(f"Test Num {str(int(test_num))} . . . Complete\n")
-            print("-----------------------------\n")
+            print("-----------------------------\n") 
             test_num = test_num + 1
             print(" ")
             print(result)
