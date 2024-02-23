@@ -30,11 +30,39 @@ def readserial(comport, baudrate, time_lim, time_step):
                 pass
         return data
 
+def readserial1(comport, baudrate):
+    ser = serial.Serial(comport, baudrate)
+    data = []
+    while len(data) < 69:
+        try:
+            data.append(int(ser.readline().decode().strip()))
+        except:
+            pass
+
+    return data
+
 def csv_export(data):
     save_path = os.getcwd() + "\\BetaBoard"
     file_name = "ForceData_" + str(datetime.now().strftime("%Y-%m-%d %H-%M-%S")) + ".csv"
     file_path = save_path + "\\" + file_name
     data.to_csv(file_path, index = False)
+
+def serialport(comport, baudrate):
+    ser = serial.Serial(comport, baudrate)
+    try:
+        while True:
+            print(ser.readline().decode().strip())
+    except KeyboardInterrupt:
+        False
+    
+def calcResistance(*resistors):
+    Rs, R_total = [], 0
+    for R in resistors:
+        R_total = R_total + R**(-1)
+    
+    print(R_total**(-1))
+    
+
 
 def main(comport, time_lim, time_step, savefile):
     os.system('cls')
@@ -69,8 +97,8 @@ def main(comport, time_lim, time_step, savefile):
             os.system("cls")
             print(f"-------- Test Num: {str(int(test_num))} --------\n")
             print(f"Test Num {str(int(test_num))} . . . In Progress\n")
-            result = readserial(comport, 9600, time_lim, time_step)
-            # result = read_values(swag_board, time_lim, time_step)
+            # result = readserial(comport, 9600, time_lim, time_step)
+            result = readserial1(comport, 9600)
             new_data = {str(test_num): result}
             data.update(new_data)
             print(f"Test Num {str(int(test_num))} . . . Complete\n")
@@ -94,4 +122,6 @@ def main(comport, time_lim, time_step, savefile):
 
 if __name__ == "__main__":
     main("COM4", 10, .5, True)
+    # serialport("COM4", 9600)
+    # calcResistance(500, 500, 700, 1500)
 
