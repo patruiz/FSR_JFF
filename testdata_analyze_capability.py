@@ -1,14 +1,19 @@
 import os 
+import statistics
 import numpy as np 
 import pandas as pd 
 import matplotlib.pyplot as plt 
 from ControlChartFunctions import individuals_chart
 
-data_dir = os.getcwd() + r"\\CapabilityData"
+os.system("cls")
+
+# data_dir = os.getcwd() + r"\\CapabilityData"
+data_dir = os.getcwd() + "\\BetaBoard"
 data_list = os.listdir(data_dir)
 
-data_file = data_list[1]
-datafile_dir = data_dir + "\\" + data_file
+# data_file = data_list[1]
+data_file = r"5V 220 ohm resistor at 10 lbs"
+datafile_dir = data_dir + "\\" + data_file + ".csv"
 
 data_df = pd.read_csv(datafile_dir)
 print(data_df)
@@ -16,7 +21,9 @@ print(data_df)
 df_columns = data_df.columns
 test_data = np.array([], dtype = float)
 for i in range(len(df_columns)):
-    entry = min(data_df[df_columns[i]])
+    # entry = min(data_df[df_columns[i]])
+    entry = statistics.mode(data_df[df_columns[i]])
+    # print(statistics.mode(data_df[df_columns[i]]))
     test_data = np.append(entry, test_data)
 
 # test_data = data_df.to_numpy()
@@ -28,7 +35,7 @@ print(f"Sample Size: {len(test_data)}")
 print(f"Average: {round(np.average(test_data), 4)}")
 print(f"Standard Deviation: {round(np.std(test_data), 4)}\n")
 
-individuals_chart(test_data)
+individuals_chart(test_data, "10lb Weight")
 
 # plt.plot(np.abs(test_data), 'o--')
 # plt.
