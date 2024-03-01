@@ -16,6 +16,7 @@ def individuals_chart(data, title):
         plt.plot(data, 'o-')
         plt.xlabel("Observation")
         plt.ylabel("Analog Value")
+        plt.ylim((200, 700))
         plt.axhline(y = mu, linestyle = "--", color = 'black', label = f"X_Bar = {round(mu, 4)}")
         plt.axhline(y = LCL, linestyle = "--", color = 'red', label = f"LCL = {round(LCL, 4)}")
         plt.axhline(y = UCL, linestyle = "--", color = 'blue', label = f"UCL = {round(UCL, 4)}")

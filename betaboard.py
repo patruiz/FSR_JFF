@@ -122,7 +122,7 @@ def main(comport, time_lim, time_step, savefile):
             break
 
 if __name__ == "__main__":
-    # main("COM4", 10, .5, True)
-    serialport("COM4", 9600)
+    main("COM4", 10, .5, True)
+    # serialport("COM4", 9600)
     # calcResistance(500, 500, 700, 1500)
 
